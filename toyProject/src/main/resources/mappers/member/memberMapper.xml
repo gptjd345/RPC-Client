@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="member">
+	<!-- 로그인 성공 시 검색되는 모든 컬럼을 memberDTO 객체에 담아 반환한다.   -->
+	<select id = "login_check" resultType="com.example.toyProject.model.member.dto.MemberDTO" >
+		select membernum, userid, password, name, phonenum, joindate, authority from member
+		where userid=#{userid} and password=#{password}
+	</select>
+	
+	<select id = "list" resultType="com.example.toyProject.model.member.dto.MemberDTO">
+		select membernum, userid, password, name, phonenum, joindate from member
+			<choose>
+				<when test="searchOption == 'all' || searchOption == 'none'">
+					where membernum like '%'||#{searchKey}||'%'
+					 or userid like '%'||#{searchKey}||'%'
+					 	or name like '%'||#{searchKey}||'%' 
+				</when>
+				<otherwise>
+					where ${searchOption} like '%'||#{searchKey}||'%'
+				</otherwise>
+			</choose>
+					 order by joindate desc
+								offset #{start} rows fetch next 10 rows only
+	</select>
+	
+	<!-- 총 레코드 수를 출력한다. -->
+	<select id = "count" resultType="Integer">
+		select count(*) from member 
+			<choose>
+				<when test="searchOption == 'all' || searchOption == 'none'">
+					where membernum like '%'||#{searchKey}||'%'
+					 or userid like '%'||#{searchKey}||'%'
+					 	or name like '%'||#{searchKey}||'%' 
+				</when>
+				<otherwise>
+					where ${searchOption} like '%'||#{searchKey}||'%'
+				</otherwise>
+			</choose>
+	</select>
+	
+	
+	<!-- 아이디 중복 여부 체크 -->
+	<select id = "idCheck" resultType="Integer" parameterType="String">
+		select count(*) from member where userid = #{userid}
+	</select>
+	
+	<!-- 수정할 회원 정보 가져오기 -->
+	<select id = "getModifyInfo" resultType="com.example.toyProject.model.member.dto.MemberDTO">
+		select membernum, userid, password, name, phonenum, joindate from member where userid = #{userid}
+	</select>
+	
+	
+	<!-- 회원 가입  -->
+	<insert id="signUp">
+		insert into member (membernum, userid, password, name, phonenum, joindate)
+			        values (seq_member.nextval, #{userid}, #{password}, #{name}, #{phonenum}, sysdate)
+	</insert>
+	
+	<!-- 회원 등록 -->
+	<insert id="regist">
+		 insert into member (membernum, userid, password, name, phonenum, joindate)
+			        values (seq_member.nextval, #{userid}, #{password}, #{name}, #{phonenum}, sysdate)
+	</insert>
+	
+	<!-- 등록 및 수정 -->
+	<update id = "modify">
+		update member set name = #{name}, phonenum = #{phonenum}, password = #{password} where userid = #{userid}
+	</update>
+	
+	<!-- 회원 삭제 -->
+	<delete id="delete" parameterType="java.util.List">
+		delete from member
+			where userid IN <foreach collection="list" item="tmp" open="(" close=")"
+			separator =",">#{tmp}</foreach>
+			
+	</delete>
+	
+	 <!-- 스프링 시큐리티에서 유저 정보 받아오는 sql 나중에 개선 -->
+	<!--<select id="getUserById" resultType="map">
+		select
+		 userid as username, 
+		 password as password, 
+		 authority as authority from member where userid = #{userid}
+	</select> -->
+	
+	
+</mapper>	

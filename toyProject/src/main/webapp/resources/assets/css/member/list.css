@@ -1,0 +1,86 @@
+.btn_Container
+{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 80px;
+}
+
+#pager
+{
+    text-align: center;
+    margin-top : 40px;
+}
+
+#pager button
+{
+    color : white;
+    background-color : #007bff;
+    border-color : #007bff;
+    margin : 6px;
+}
+
+#pager span
+{
+    margin : 6px;
+}
+
+.btn_Container .btn_1
+{
+    margin-right: 30px;
+}
+
+
+.fail{
+    color: red;
+}
+
+#manage-box button
+{
+	color : black;
+}
+
+#manage-box button:last-child
+{
+	margin-right: 5px;
+}
+
+.input-container
+{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    border: rgba(128, 128, 128, 0.438) solid 1px;
+    padding : 60px;
+
+    
+}
+
+.table-responsive a
+{
+	color : #007bff;
+}
+
+.btn_Container #register-form
+{
+	color : white;
+}
+
+#search-section 
+{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+    
+}
+
+#search-section .col-lg-2 input{
+    height: 100%;
+}
+
+#search-section button{
+    border-radius: 0.25rem;
+}
+
+
+
+

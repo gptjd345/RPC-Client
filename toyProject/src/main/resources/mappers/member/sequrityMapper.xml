@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="com.example.toyProject.service.member.security.MemberMapper">
+
+	<!-- 
+	<resultMap type="com.example.toyProject.model.member.dto.MemberDTO" id="memberMap">
+		<result property="username" column="userid"/>
+		<result property="password" column="password"/>
+		<result property="authority" column="authority"/>
+	</resultMap>
+	
+	 -->
+	
+	<!-- 스프링 시큐리티에서 유저 정보 받아오는 sql 나중에 개선 -->
+	<!-- <select id="read" resultMap="memberMap">
+		select
+		 userid as username, 
+		 password as password, 
+		 authority as authority from member where userid = #{username}
+	</select> -->
+	
+	
+</mapper>	 

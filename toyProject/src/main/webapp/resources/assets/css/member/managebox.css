@@ -1,0 +1,27 @@
+
+#manage-box{
+	padding : 20px;
+}
+
+
+#registration
+{
+	margin-right: 5px;
+}
+
+.login_part_form_iner button
+{
+	margin-top : 10px;
+	margin-button : 20px;
+	color : black;
+	padding : 20px;
+		
+}
+
+#subContainer
+{
+	display : flex;
+	justify-content : flex-end;
+}
+
+
