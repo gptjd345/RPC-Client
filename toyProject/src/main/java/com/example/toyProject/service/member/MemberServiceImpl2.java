@@ -15,7 +15,7 @@ import com.example.toyProject.model.member.dao.MemberDAO;
 import com.example.toyProject.model.member.dto.MemberDTO;
 
 @Service
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl2 implements MemberService {
 	
 	@Inject
 	MemberDAO memberDAO;

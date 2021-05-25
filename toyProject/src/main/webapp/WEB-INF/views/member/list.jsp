@@ -4,6 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+
+<!-- ClientInvoker 클래스의 메소드를 사용하기 위해 자바 클래스를 import한다.  -->
+<%@page import="com.example.toyProject.ClientInvoker" %>
+<!-- 테스트를 위한 memberDTO를 받아옴 -->
+<%@page import="com.example.toyProject.model.member.dto.PageDTO" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zxx">
 <head>
@@ -41,7 +47,11 @@
 	         
         <div class="container">
             <div class="table-responsive">
-            
+            <% 
+            	 PageDTO pageDTO = (PageDTO)request.getAttribute("pageDTO");	
+            	out.println("Client Invoker TotalList : "+ClientInvoker.getListTotal(pageDTO.getSearchOption(), pageDTO.getSearchKey()));
+            	
+            %>
 		      <!--================ 검색 폼  ====================-->
 		      <form action="#">
 		      	<input type="hidden" name="curBlock" value="${pageDTO.curBlock}"/>

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.toyProject.model.member.dto.MemberDTO;
 import com.example.toyProject.model.member.dto.PageDTO;
 import com.example.toyProject.service.member.MemberService;
+import com.example.toyProject.service.member.MemberServiceImpl2;
 
 @Controller
 @RequestMapping("/member/*")
@@ -28,7 +29,7 @@ public class MemberController
 {
 	
 	@Inject
-	MemberService memberService;
+	MemberServiceImpl2 memberService;
 	
 	@RequestMapping("login")
 	public String login()
