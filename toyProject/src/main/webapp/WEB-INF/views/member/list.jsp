@@ -53,81 +53,11 @@
             	
             %>
 		      <!--================ 검색 폼  ====================-->
-		      <form action="#">
-		      	<input type="hidden" name="curBlock" value="${pageDTO.curBlock}"/>
-			      <section id="search-section">
-			      <!-- =========== 검색 정보 유지================= -->
-			      <c:choose>
-			      	<c:when test="${pageDTO.searchOption == 'none'}">	
-			            <select name="searchOption">
-			                <option value="none" selected>=== 선택 ===</option>
-			                <option value="all">멤버번호+아이디+이름</option>
-			                <option value="membernum">멤버번호</option>
-			                <option value="userid">아이디</option>
-			                <option value="name">이름</option>
-			            </select>
-			         </c:when>  
-			         <c:when test="${pageDTO.searchOption == 'all'}">	
-			            <select name="searchOption">
-			                <option value="none">=== 선택 ===</option>
-			                <option value="all" selected>멤버번호+아이디+이름</option>
-			                <option value="membernum">멤버번호</option>
-			                <option value="userid">아이디</option>
-			                <option value="name">이름</option>
-			            </select>
-			         </c:when> 
-			         <c:when test="${pageDTO.searchOption == 'membernum'}">	
-			            <select name="searchOption">
-			                <option value="none">=== 선택 ===</option>
-			                <option value="all">멤버번호+아이디+이름</option>
-			                <option value="membernum" selected>멤버번호</option>
-			                <option value="userid">아이디</option>
-			                <option value="name">이름</option>
-			            </select>
-			         </c:when> 
-			         <c:when test="${pageDTO.searchOption == 'userid'}">	
-			            <select name="searchOption">
-			                <option value="none">=== 선택 ===</option>
-			                <option value="all">멤버번호+아이디+이름</option>
-			                <option value="membernum">멤버번호</option>
-			                <option value="userid" selected>아이디</option>
-			                <option value="name">이름</option>
-			            </select>
-			         </c:when>  
-			         <c:when test="${pageDTO.searchOption == 'name'}">	
-			            <select name="searchOption">
-			                <option value="none">=== 선택 ===</option>
-			                <option value="all">멤버번호+아이디+이름</option>
-			                <option value="membernum">멤버번호</option>
-			                <option value="userid">아이디</option>
-			                <option value="name" selected>이름</option>
-			            </select>
-			         </c:when> 
-			      </c:choose>      
-			            <div class="col-lg-2">
-			                <input type="text" class="form-control" name="searchKey" value="${pageDTO.searchKey}"/>
-			            </div>
-			            <button id="searchButton" type="button" class="btn-secondary">검색</button>
-			       </section>
-		       </form>
 		       
-		       
-              <table class="table">
-                <thead>
-                	<th>선택</th>
-                    <th>번호</th>
-                    <th>아이디</th>
-                    <th>이름</th>
-                    <th>전화번호</th>
-                    <th>가입일자</th>
-                </thead>
-                <tbody>
-	                    
-                </tbody>
-              </table>
-	              <nav>
-	          		
-	              </nav>
+		      <div id="memberListPrint"> 
+              
+	          </div>   
+	             
 	          <form action="delete.do" method="post" id="deleteForm"> 
 		           <!-- 현재 페이지 블록값을 저장 -->   
 		           <input type="hidden" class="curBlock" name="curBlock" value="${pageDTO.curBlock}"/>
@@ -166,7 +96,7 @@
 	
 	<!-- Toy Project JS -->
 
-	<script src="/resources/assets/js/toyProject/member/list.js?ver1.8"></script>
+	<script src="/resources/assets/js/toyProject/member/list.js?ver1.1"></script>
 	
 	<!-- 날짜 포맷을 위한 라이브러리 jstl의 format date 와 유사  -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>

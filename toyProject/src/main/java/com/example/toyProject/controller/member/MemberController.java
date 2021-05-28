@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.toyProject.model.member.dto.MemberDTO;
 import com.example.toyProject.model.member.dto.PageDTO;
 import com.example.toyProject.service.member.MemberService;
-import com.example.toyProject.service.member.MemberServiceImpl2;
+import com.example.toyProject.service.member.MemberServiceImpl;
 
 @Controller
 @RequestMapping("/member/*")
@@ -29,7 +29,7 @@ public class MemberController
 {
 	
 	@Inject
-	MemberServiceImpl2 memberService;
+	MemberServiceImpl memberService;
 	
 	@RequestMapping("login")
 	public String login()
@@ -75,7 +75,6 @@ public class MemberController
 		return "redirect:/member/login";
 	}
 	
-
 	@RequestMapping("list")
 	public ModelAndView list(@ModelAttribute PageDTO pageDTO)
 	{	
@@ -85,11 +84,10 @@ public class MemberController
 		
 		return mav;		
 	}
-	
+
 	@RequestMapping("tableInit.do")
-	public @ResponseBody Map<String,Object> tableInit(@RequestBody PageDTO pageDTO)
-	{
-		
+	public @ResponseBody ModelAndView tableInit(@RequestBody PageDTO pageDTO)
+	{	
 		//전체 레코드 수 알아옴
 		int totalPage = memberService.count(pageDTO.getSearchOption(),pageDTO.getSearchKey());
 		
@@ -99,24 +97,19 @@ public class MemberController
 		
 		//해당 블록에 레코드가 없다면 없는 페이지를 보여준다.   
 		
-		List<MemberDTO> list = memberService.list(start,pageDTO.getSearchOption(),pageDTO.getSearchKey());
+		List<MemberDTO> list = 
+				memberService.list(start,pageDTO.getSearchOption(),pageDTO.getSearchKey());
 		
-		System.out.println("totalPage = "+totalPage);
-		System.out.println("curBlock:"+pageDTO.getCurBlock());
-		System.out.println("searchOption:"+pageDTO.getSearchOption());
-		System.out.println("searchKey:"+pageDTO.getSearchKey());
-		System.out.println("start:"+start);
-		System.out.println("list:"+list);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("memberListPrint");
+		mav.addObject("list", list);
+		mav.addObject("totalPage", totalPage);
+		mav.addObject("pageDTO", pageDTO);
 		
-		Map<String,Object> map = new HashMap<String,Object>(); 
-		map.put("list", list);
-		map.put("totalPage", totalPage);
-		map.put("pageDTO", pageDTO);
-		
-		
-		return map;
-		
+		return mav;
+					
 	}
+	
 	
 	//회원가입시 아이디 중복 확인 
 	@RequestMapping("/idCheck.do")
@@ -222,19 +215,11 @@ public class MemberController
 	
 	//회원 삭제 수행
 	@RequestMapping("/delete.do")
-	public ModelAndView delete(@RequestParam List<String> list, @ModelAttribute PageDTO pageDTO)
+	public @ResponseBody void delete(@RequestParam List<String> selectedRow)
 	{
-		System.out.println("회원 삭제할 리스트(아이디) : "+list);
-		memberService.delete(list);
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("alert");
-		mav.addObject("msg", "삭제되었습니다. ");
-		mav.addObject("url", "/member/list.do?curBlock="+pageDTO.getCurBlock()+
-				"&searchOption="+pageDTO.getSearchOption()+"&searchKey="+pageDTO.getSearchKey());
-		
-		
-		return mav;
+		System.out.println("회원 삭제할 리스트(아이디) : "+selectedRow);
+		memberService.delete(selectedRow);
+			
 	}
 	
 	

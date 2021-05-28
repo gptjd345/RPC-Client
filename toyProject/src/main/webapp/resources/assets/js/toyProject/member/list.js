@@ -1,203 +1,78 @@
 
+//  검색 옵션, 검색 키워드 , 현재 블록 정보는 쿠키에 저장하고 쿠키 만료 날짜는 1일로 설정한다. 
+//  document.cookie = "cookie이름 = 쿠키값;  expires = UTC 날짜";
+//  escape(cookieValue) : 쿠키는 기본적으로 데이터를 아스키 코드형식으로 받아들인다. 저장하려는 데이터가 
+// 						아스키 문자가 아니라면(한글) 모두 유니코드 형식으로 변환해야한다. 
+//  unescape(cookieValue); 쿠키값은 디코딩 후 값을 리턴
+function setCookie(name,value)
+{
+  //  Date 형 변수 선언	
+  var exdate = new Date();
+  // Date객체의 getDate 메소드를 통해 현재 날짜를 받아오고 거기에 1을 더한다.(쿠키의 만료날짜는 1일)
+  exdate.setDate(exdate.getDate() + 1);
+  
+  //  document.cookie 양식에 맞게 데이터 입력 
+  var cookie_value= escape(value)+'; expires=' + exdate.toUTCString();
+  document.cookie = name + '=' + cookie_value;
 
+}
+
+//  원하는 쿠키이름 입력 시 해당 쿠키 값을 리턴 
+function getCookie(name) 
+{
+  var cookieName,cookieValue;
+  // 쿠키 값에 입력된 데이터를 ;를 구분자로 나누어서 배열형태로 저장한다. 
+  var totalValue = document.cookie.split(';');
+ 
+ for(let i = 0 ; i < totalValue.length; i++)
+ {
+   // 쿠키 이름에 해당하는 부분
+   cookieName = totalValue[i].substr(0, totalValue[i].indexOf('='));
+   
+   // 쿠키 값에 해당하는 부분
+   cookieValue = totalValue[i].substr(totalValue[i].indexOf('=') + 1 );
+   
+   // 쿠키이름 양쪽 공백제거
+   cookieName = $.trim(cookieName);
+   if(cookieName == name)
+   {
+	 // 쿠키값은 디코딩 후 값을 리턴
+     return unescape(cookieValue); 
+   }
+ }
+ 
+} 
 
 
 $('#delete').click(function(e) 
 {
-				
-	$('input[name=checkbox]:checked').each(function(e){
-		let value = $(this).val(); 
-		$('#deleteForm').append($('<input/>',{type:'hidden',name:'list',value:value}));
+	let selectedRow = [];
+	
+	// checkbox의 value 속성에는 userid 값이 들어있다. 
+	// checkbox의 부모 태그 중 tr 태그선택한다. 
+	// tr태그의 display 속성을 none으로 지정하면 테이블에서 해당 로우를 안보이게 할 수 있다. 
+	$('.table tr:visible input[name=checkbox]:checked').each(function(e){
+		$(this).closest('tr').css('display','none');
+		selectedRow.push($(this).val());
 	});
-	
-	$('#deleteForm').submit();
-     
-	
+	console.log("selectedRow : "+selectedRow)
+	$.ajax({
+	    url: "/member/delete.do",
+	    type: "post",
+	// traditional 옵션을 사용하면 배열전달가능 
+	    traditional : true,
+	    data: { "selectedRow" : selectedRow } ,
+	    dataType: "text",
+	    success: function(pageDTO)
+	    {
+        	alert("삭제 되었습니다.");    
+	    }
+	});
 });
 
 
-//테이블 초기화를 위한 데이터를 컨트롤러에서 가져온다. 
-var tableInit = function(e) 
-{	
-	var curBlock = $('input[name=curBlock]').val();
-	var searchOption = $('select[name=searchOption]').val();
-	var searchKey = $('input[name=searchKey]').val();
-	
-	var data = {"curBlock":curBlock, "searchOption":searchOption, "searchKey":searchKey};
-	 $.ajax({
-	        url: "./tableInit.do",
-	        type: 'post',
-	        data: JSON.stringify(data),
-	        contentType : 'application/json; charset=utf=8',
-	        dataType : 'json',
-	        success: function(map)
-	        {
-	        	//테이블 초기화
-	            tableList(map);
-	        }
-	    });
 
-};
-
-
-var tableList = function(map)
-{
-		const list = map['list'];
-		const totalPage = map['totalPage'];
-		const pageDTO = map['pageDTO'];
-		console.log(pageDTO);
-		
-		//테이블 목록을 지움
-		$('.table>tbody').css('display','none');
-		var tableList = "<tbody>";
-		for(let i = 0; i < list.length; i++)
-		{	
-			tableList += "<tr>";
-			tableList += "<td>"+"<input type='checkbox' name='checkbox' value='"+list[i]['userid']+"'/>"+"</td>";
-			tableList += "<td>"+list[i]['membernum']+"</td>";
-			tableList += "<td>"+"<a href='./modify?userid="+list[i]['userid']+"&curBlock="+pageDTO['curBlock']+"&searchOption="+pageDTO['searchOption']+"&searchKey="+pageDTO['searchKey']+"'>"+list[i]['userid']+"</a></td>";
-			tableList += "<td>"+list[i]['name']+"</td>";
-			tableList += "<td>"+formattingPhoneNum(list[i]['phonenum'])+"</td>";
-			tableList += "<td>"+moment(list[i]['joindate']).format('YYYY-MM-DD HH:mm')+"</td>";
-			tableList += "</tr>";	
-			
-		};
-		tableList += "</tbody>";
-		$('.table').append(tableList);
-		
-		let startBlock = pageDTO['curBlock'] - (pageDTO['curBlock'] - 1) % 10;
-		//나머지가 잇는 경우 올림처리
-		let lastBlock = Math.ceil(totalPage/10);
-		
-		//페이저 지움
-		$('.table').next().css('display','none');
-		
-		//페이저
-		var pager="<nav id='pager'>";
-		let prevButton;
-		let pageNumber;
-		
-		//이전버튼
-		if(startBlock > 1)
-		{	
-			pager += "<button type='button' id='prevButton' onclick='prevButtonClick();'><i class='fas fa-angle-left' title='이전'></i></button>"
-				
-		}
-		
-		//실제페이지가 존재하는 마지막 블록보다 시작블록에서 9를 더한값이 더크면 실제페이지가 존재하는 마지막 블록이 화면에서 보여주는 마지막 블록이된다. 
-		let endBlock = (startBlock+9 > lastBlock ) ? lastBlock : startBlock +9; 
-		for(let i = startBlock ; i <= endBlock ; i++)
-		{
-			
-			if(i == pageDTO['curBlock'])
-			{
-				console.log("i="+ i);
-				pager += "<span style='color: red;'>"+i+"</span>"
-				continue;
-			}
-			pager += "<button type='button' class='pagerNum' value='"+i+"'onclick='pageButtonClick();'>"+i+"</button>";
-				
-		}
-		
-		//다음버튼 예상되는 마지막블록보다 1큰값이 데이터가 존재하는 마지막 블록보다 작은경우(다음불록에 데이터가 있는 경우)
-		if(startBlock + 10 <= lastBlock)
-		{
-			pager += "<button type='button' id='nextButton' onclick='nextButtonClick();'><i class='fas fa-angle-right' title='다음'></i></button>"
-				
-		}
-	
-		pager += "</nav>"
-		
-		//pager 그리기 
-		$('.table').after(pager);
-		
-};
-
-//전화번호 -(하이픈) 처리해서 보여준다. 애초에 사용자가 - 을 써도 되고 안써도 되도록 해서 일관된 화면을 보여주기 위함
-let formattingPhoneNum = function(pnum)
-{
-	//하이픈 먼저 전부 제거 후 진행
-	let phonenum = pnum;
-	phonenum = phonenum.replace(/\-/g,"");
-	
-	let firstnum = phonenum.substring(0,3);
-	
-	//substring(startIndex,endIndex) 마지막 인덱스는 포함하지 않는다.
-	let middlenum = phonenum.substring(3,(phonenum.length-4));
-
-	let lastnum = phonenum.substring(phonenum.length-4);
-	
-	return firstnum+'-'+middlenum+'-'+lastnum;
-}
-
-//list 테이블 초기화
-tableInit();
-
-
-////버튼 클릭시 ajax 통신 
-$('#searchButton').click(function(e)
-{	
-	let searchOption = $('input[name=searchOption]').val();
-	let searchKey = $('input[name=searchKey]').val();
-	
-	console.log("searchOption : "+searchOption+" searchKey :"+searchKey);
-	//검색옵션을 저장
-	$('input[name=searchOption]').attr('value',searchOption);
-	
-	//검색 키워드 저장
-	$('input[name=searchKey]').attr('value',searchKey);
-	
-	//테이블 초기화 함수 실행
-	tableInit();		
-});
-
-//이전 버튼 클릭시
-var prevButtonClick = function(e)
-{
-	let curBlock = $('input[name=curBlock]').val();
-	//시작 블록에서 1을 뺀값이 이전 블록 값이다.
-	let prevBlock = curBlock - (curBlock - 1) % 10 - 1 ;
-	
-	//현재 블록번호를 변경
-	$('input[name=curBlock]').attr('value',prevBlock);
-	
-	//테이블 초기화 함수 실행
-	tableInit();	
-	
-};
-
-//다음 버튼 클릭시
-var nextButtonClick = function(e)
-{
-	let curBlock = $('input[name=curBlock]').val();
-	let startBlock = curBlock - (curBlock - 1) % 10 ;
-	
-	//시작 블록에서 10을 더하면 다음 블록이다.
-	let nextBlock = startBlock + 10;
-	
-	//현재 블록번호를 변경
-	$('input[name=curBlock]').attr('value',nextBlock);
-	
-	//테이블 초기화 함수 실행
-	tableInit();	
-	
-};
-
-
-//페이지 버튼 클릭시
-var pageButtonClick = function()
-{
-	let pageBlock = $(event.target).val();
-	console.log("pageBlock "+pageBlock);
-	//현재 블록번호를 변경
-	$('input[name=curBlock]').attr('value',pageBlock);
-	
-	//테이블 초기화 함수 실행
-	tableInit();	
-	
-};
-
-//등록 창으로 이동
+// 등록 창으로 이동
 $('#regist').click(function(e)
 {	
 	let curBlock = $('input[name=curBlock]').val();
@@ -208,6 +83,100 @@ $('#regist').click(function(e)
 		"&searchOption="+searchOption+"&searchKey="+encodeURI(searchKey));
 		
 });
+
+
+
+// 테이블과 페이저를 초기화한 html을 가져와서 특정 태그 아래에 뿌린다.  
+var tableInit = function(e) 
+{	
+	var curBlock = getCookie("curBlock");
+	var searchOption = getCookie("searchOption");
+	var searchKey = getCookie("searchKey");
+	
+	console.log("curBlock : "+curBlock+"searchOption : "+searchOption+" searchKey :"+searchKey);
+	var data = {"curBlock":curBlock, "searchOption":searchOption, "searchKey":searchKey};
+	 $.ajax({
+	        url: "./tableInit.do",
+	        type: 'post',
+	        data: JSON.stringify(data),
+	        contentType : 'application/json; charset=utf=8',
+	        success: function(result)
+	        {
+	        	//  id가 memberListPrint인 태그 아래에 동적으로 만들어 놓은 html 을 삽입한다..
+	            $('#memberListPrint').html(result);
+	            
+	        }
+	    });
+
+};
+
+// 테이블과 페이저 초기화 
+tableInit();
+
+
+// 이전 버튼 클릭시
+var prevButtonClick = function(e)
+{
+	let curBlock = $('input[name=curBlock]').val();
+	// 시작 블록에서 1을 뺀값이 이전 블록 값이다.
+	let prevBlock = curBlock - (curBlock - 1) % 10 - 1 ;
+	
+	// 현재블록을 쿠키에 저장
+	setCookie("curBlock",preBlock);
+	
+	// 테이블 초기화 함수 실행
+	tableInit();	
+	
+};
+
+// 다음 버튼 클릭시
+var nextButtonClick = function(e)
+{
+	let curBlock = $('input[name=curBlock]').val();
+	let startBlock = curBlock - (curBlock - 1) % 10 ;
+	
+	// 시작 블록에서 10을 더하면 다음 블록이다.
+	let nextBlock = startBlock + 10;
+	
+	// 현재블록을 쿠키에 저장
+	setCookie("curBlock",nextBlock);
+	
+	// 테이블 초기화 함수 실행
+	tableInit();	
+	
+};
+
+
+// 페이지 버튼 클릭시
+var pageButtonClick = function()
+{
+	let pageBlock = $(event.target).val();
+	console.log("pageBlock "+pageBlock);
+	
+	// 검색 옵션을 쿠키에 저장
+	setCookie("curBlock",pageBlock);
+	
+	// 테이블 초기화 함수 실행
+	tableInit();	
+	
+};
+
+// 검색 버튼 클릭시 
+var searchButtonClick = function(e)
+{
+	let searchOption = $('select[name=searchOption]').val();
+	let searchKey = $('input[name=searchKey]').val();
+	
+	console.log("searchOption : "+searchOption+" searchKey :"+searchKey);
+	
+	// 검색 옵션을 쿠키에 저장
+	setCookie("searchOption",searchOption);
+	// 검색 키워드를 쿠키에 저장
+	setCookie("searchKey",searchKey);
+		
+	// 테이블 초기화 함수 실행
+	tableInit();
+};
 
 
 
