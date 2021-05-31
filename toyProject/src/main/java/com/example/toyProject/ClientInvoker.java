@@ -1,7 +1,11 @@
 package com.example.toyProject;
 
+import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.example.toyProject.model.member.dto.MemberDTO;
 import com.example.toyProject.service.member.MemberService;
 
 public class ClientInvoker {
@@ -15,6 +19,13 @@ public class ClientInvoker {
 				new ClassPathXmlApplicationContext("../spring/root-context.xml");
 		MemberService memberService = 
 				(MemberService)context.getBean("memberServiceImplInvoker");
+		
+		System.out.println("HTTP invoker idCheck "+memberService.idCheck("gptjd345"));
+		
+		List<MemberDTO> list = memberService.list(2, "all", "");
+		
+		System.out.println("HTTP invoker list "+list);
+		
 		return memberService.count(searchOption, searchKey);
 		
 		
