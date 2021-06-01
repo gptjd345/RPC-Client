@@ -22,10 +22,14 @@ public class ClientInvoker {
 		
 		System.out.println("HTTP invoker idCheck "+memberService.idCheck("gptjd345"));
 		
+		//회원 목록을 가져온다. 페이지블록 = 2 , 검색 옵션 = all , 검색 키워드 = ""
 		List<MemberDTO> list = memberService.list(2, "all", "");
 		
 		System.out.println("HTTP invoker list "+list);
 		
+		System.out.println("HTTP invoker list "+memberService.getModifyInfo("gptjd345"));
+		
+		//검색 옵션과 검색 키워드에 맞는 레코드의 수를 반환한다. 
 		return memberService.count(searchOption, searchKey);
 		
 		

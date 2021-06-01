@@ -34,8 +34,7 @@
     </bean>	
     
     
-    <bean id="memberServiceImplInvoker" 
-    	class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+    <bean id="memberServiceImplInvoker" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
     	<property name="serviceUrl" value="http://localhost:8080/httpinvoker/MemberService.http"></property>
     	<property name="serviceInterface" value="com.example.toyProject.service.member.MemberService"></property>
     </bean>
