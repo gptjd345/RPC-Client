@@ -1,12 +1,10 @@
 package com.example.toyProject.controller.member;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -30,6 +28,10 @@ public class MemberController
 	
 	@Inject
 	MemberServiceImpl memberService;
+	
+	//Invoker로 받아온 빈  inject
+	@Inject
+	MemberService memberServiceImplInvoker;
 	
 	@RequestMapping("login")
 	public String login()
@@ -76,8 +78,18 @@ public class MemberController
 	}
 	
 	@RequestMapping("list")
-	public ModelAndView list(@ModelAttribute PageDTO pageDTO)
+	public ModelAndView list(@ModelAttribute PageDTO pageDTO, HttpServletRequest req)
 	{	
+		
+		//CustomHttpRequestServlet 객체 생성
+		CustomHttpRequestServlet customHttpRequestServlet = new CustomHttpRequestServlet(req);
+		
+		//System.out.println("hashcode : "+req.hashCode());
+		//invoker로 메소드 가져올수있는지 확인 
+		System.out.println("CanIserialize 직렬화가능  : "+memberServiceImplInvoker.CanISerialize(customHttpRequestServlet));
+		
+		System.out.println("CanIserialize : "+memberServiceImplInvoker.count("all", "아무개"));
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/member/list");
 		mav.addObject("pageDTO",pageDTO);
@@ -222,5 +234,6 @@ public class MemberController
 			
 	}
 	
+
 	
 }

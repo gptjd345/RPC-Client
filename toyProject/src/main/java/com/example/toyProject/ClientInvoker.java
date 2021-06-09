@@ -2,8 +2,15 @@ package com.example.toyProject;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.support.HttpRequestWrapper;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.example.toyProject.model.member.dto.MemberDTO;
 import com.example.toyProject.service.member.MemberService;
@@ -28,6 +35,10 @@ public class ClientInvoker {
 		System.out.println("HTTP invoker list "+list);
 		
 		System.out.println("HTTP invoker list "+memberService.getModifyInfo("gptjd345"));
+		
+
+		
+		
 		
 		//검색 옵션과 검색 키워드에 맞는 레코드의 수를 반환한다. 
 		return memberService.count(searchOption, searchKey);

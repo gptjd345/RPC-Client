@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.toyProject.controller.member.CustomHttpRequestServlet;
 import com.example.toyProject.model.member.dto.MemberDTO;
 
 public interface MemberService {
@@ -38,5 +39,7 @@ public interface MemberService {
 	//회원 삭제 처리
 	void delete(List<String> list);
 	
+	//HttpServletRequest 직렬화 가능 여부 확인 
+	int CanISerialize(CustomHttpRequestServlet req);
 	
 }
