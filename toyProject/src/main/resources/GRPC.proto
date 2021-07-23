@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+
+
+option java_multiple_files = true; //여러개의 자바 소스코드로 생성
+option java_package = "com.grpctest"; //생성되는 코드들의 자바 패키지 위치 설정
+option java_outer_classname = "helloProto"; //생성되는 클래스 명 설정
+
+package grpctest; //protobuf로 정의된 메시지간 이름 충돌을 방지하기 위한 패키지
+
+service HelloService
+{
+	//단순한 RPC 클라리언트에서 요청보내고 서버응답 리턴
+	rpc HelloWorldPrint(HelloWorldRequest) returns (HelloWorldResponse) {}
+
+}
+
+message HelloWorldRequest{
+	string msg = 1;
+}
+
+message HelloWorldResponse {
+	string msg = 1;
+}

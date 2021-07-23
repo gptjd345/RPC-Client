@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- 컨트롤러에서 alert 메시지를 보내고 싶을 때 사용한다. -->
-<script type="text/javascript">
+<script type="text/javascript" charset="UTF-8">
 var message = "${msg}";
 var returnUrl = "${url}";
 alert(message);

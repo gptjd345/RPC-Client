@@ -82,11 +82,11 @@ public class MemberController
 	{	
 		
 		//CustomHttpRequestServlet 객체 생성
-		CustomHttpRequestServlet customHttpRequestServlet = new CustomHttpRequestServlet(req);
+		//CustomHttpRequestServlet customHttpRequestServlet = new CustomHttpRequestServlet(req);
 		
 		//System.out.println("hashcode : "+req.hashCode());
 		//invoker로 메소드 가져올수있는지 확인 
-		System.out.println("CanIserialize 직렬화가능  : "+memberServiceImplInvoker.CanISerialize(customHttpRequestServlet));
+		//System.out.println("CanIserialize 직렬화가능  : "+memberServiceImplInvoker.CanISerialize(customHttpRequestServlet));
 		
 		System.out.println("CanIserialize : "+memberServiceImplInvoker.count("all", "아무개"));
 		
