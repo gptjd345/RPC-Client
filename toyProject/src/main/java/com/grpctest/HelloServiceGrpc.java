@@ -66,7 +66,7 @@ public class HelloServiceGrpc {
 
     /**
      * <pre>
-     *단순한 RPC 클라리언트에서 요청보내고 서버응답 리턴
+     *단순한 RPC 클라이언트에서 요청보내고 서버응답 리턴
      * </pre>
      */
     public void helloWorldPrint(com.grpctest.HelloWorldRequest request,
@@ -107,7 +107,7 @@ public class HelloServiceGrpc {
 
     /**
      * <pre>
-     *단순한 RPC 클라리언트에서 요청보내고 서버응답 리턴
+     *단순한 RPC 클라이언트에서 요청보내고 서버응답 리턴
      * </pre>
      */
     public void helloWorldPrint(com.grpctest.HelloWorldRequest request,
@@ -137,7 +137,7 @@ public class HelloServiceGrpc {
 
     /**
      * <pre>
-     *단순한 RPC 클라리언트에서 요청보내고 서버응답 리턴
+     *단순한 RPC 클라이언트에서 요청보내고 서버응답 리턴
      * </pre>
      */
     public com.grpctest.HelloWorldResponse helloWorldPrint(com.grpctest.HelloWorldRequest request) {
@@ -166,7 +166,7 @@ public class HelloServiceGrpc {
 
     /**
      * <pre>
-     *단순한 RPC 클라리언트에서 요청보내고 서버응답 리턴
+     *단순한 RPC 클라이언트에서 요청보내고 서버응답 리턴
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.grpctest.HelloWorldResponse> helloWorldPrint(

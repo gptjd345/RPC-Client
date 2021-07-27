@@ -13,6 +13,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="C:/HttpInvoker/workspace/ojdbc8-12.2.0.1.jar"/>
+	<classpathentry exported="true" kind="src" path="/hyeseongToyProject"/>
 	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>

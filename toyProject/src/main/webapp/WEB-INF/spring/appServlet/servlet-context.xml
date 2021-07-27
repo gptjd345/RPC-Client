@@ -21,7 +21,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.example.toyProject" />
+	<context:component-scan base-package="com" />
 	
 	<!-- 로그인 인터셉터 빈을 서블릿 컨테이너에 등록한다.  -->
 	 

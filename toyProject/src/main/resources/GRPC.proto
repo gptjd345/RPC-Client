@@ -10,7 +10,7 @@ package grpctest; //protobuf로 정의된 메시지간 이름 충돌을 방지�
 
 service HelloService
 {
-	//단순한 RPC 클라리언트에서 요청보내고 서버응답 리턴
+	//단순한 RPC 클라이언트에서 요청보내고 서버응답 리턴
 	rpc HelloWorldPrint(HelloWorldRequest) returns (HelloWorldResponse) {}
 
 }

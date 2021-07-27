@@ -13,7 +13,7 @@ import io.grpc.stub.StreamObserver;
 @Service
 public class GrpcClient {
 	//스텁생성
-	 private static final int PORT = 3030;
+	 private static final int PORT = 8099;
 	    public static final String HOST = "localhost";
 	    private final HelloServiceStub asyncStub = HelloServiceGrpc.newStub(
 	            ManagedChannelBuilder.forAddress(HOST, PORT)
@@ -22,14 +22,14 @@ public class GrpcClient {
 	    );
 	 
 	    public String helloWorldPrint() {
-	        final HelloWorldRequest helloWorldRequest = HelloWorldRequest.newBuilder()
+	     final HelloWorldRequest helloWorldRequest = HelloWorldRequest.newBuilder()
 	        		.setMsg("really really")
 	                .build();
 	 
 	        asyncStub.helloWorldPrint(helloWorldRequest, new StreamObserver<HelloWorldResponse>() {
 	            @Override
 	            public void onNext(HelloWorldResponse value) {
-	                System.out.println("GrpcClient#sampleCall - {}"+ value);
+	                System.out.println("GrpcClient#sampleCall - {}"+ value.getMsg());
 	            }
 	 
 	            @Override

@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
 <mapper namespace="member">
 	<!-- 로그인 성공 시 검색되는 모든 컬럼을 memberDTO 객체에 담아 반환한다.   -->
-	<select id = "login_check" resultType="com.example.toyProject.model.member.dto.MemberDTO" >
+	<select id = "login_check" resultType="com.example.toyProject.model.member.dto.MemberDTO">
 		select membernum, userid, password, name, phonenum, joindate, authority from member
 		where userid=#{userid} and password=#{password}
 	</select>

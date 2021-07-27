@@ -18,27 +18,28 @@ public class MemberDTO implements Serializable{
 	private String phonenum;
 	private Date joindate;
 	
-	private String nickname;
+//	private String nickname;
 	
-	public String getNickname()
-	{
-		return nickname;
-	}
-	public void setNickname(String nickname)
-	{
-		this.nickname = nickname;
-	}
+//	public String getNickname()
+//	{
+//		return nickname;
+//	}
+//	public void setNickname(String nickname)
+//	{
+//		this.nickname = nickname;
+//	}
+//	
+//	//사용자의 권한
+//	private String authority;
+//
+//	
+//	public String getAuthority() {
+//		return authority;
+//	}
+//	public void setAuthority(String authority) {
+//		this.authority = authority;
+//	}
 	
-	//사용자의 권한
-	private String authority;
-
-	
-	public String getAuthority() {
-		return authority;
-	}
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
 	public int getMembernum() {
 		return membernum;
 	}
@@ -79,7 +80,7 @@ public class MemberDTO implements Serializable{
 	@Override
 	public String toString() {
 		return "MemberDTO [membernum=" + membernum + ", userid=" + userid + ", password=" + password + ", name=" + name
-				+ ", phonenum=" + phonenum + ", joindate=" + joindate + ", authority=" + authority + " nickname="+ nickname+ "]";
+				+ ", phonenum=" + phonenum + ", joindate=" + joindate +"]";
 	}
 	
 	
